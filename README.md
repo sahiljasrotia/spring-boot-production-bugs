@@ -1,4 +1,4 @@
-# 5 Spring Boot Bugs That Only Show Up in Production
+# Spring Boot Bugs That Only Show Up in Production
 [![CI](https://github.com/sahiljasrotia/spring-boot-production-bugs/actions/workflows/ci.yml/badge.svg)](https://github.com/sahiljasrotia/spring-boot-production-bugs/actions/workflows/ci.yml)
 
 Demo code for the video series on [The Java Loom](https://www.youtube.com/@thejavaloom), one video
