@@ -1,0 +1,23 @@
+# Tests run on in-memory H2 - no Docker needed. The multi-instance bugs (1 and 2) are shown live, not in tests.
+spring:
+  datasource:
+    url: jdbc:h2:mem:prodbugs;DB_CLOSE_DELAY=-1;LOCK_TIMEOUT=10000
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    open-in-view: true
+  sql:
+    init:
+      mode: never
+
+demo:
+  instance: test
+  bug2:
+    mode: off
+    cron: "-"
+
+logging:
+  level:
+    root: warn

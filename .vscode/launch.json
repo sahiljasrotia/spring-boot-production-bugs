@@ -1,0 +1,93 @@
+{
+  // Run and Debug panel (Ctrl+Shift+D): pick a configuration, press the green ▶.
+  // "Bug 1" / "Bug 2" start every server that bug needs at once; the red ■ stops them all.
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "App :8080",
+      "request": "launch",
+      "mainClass": "com.thejavaloom.prodbugs.ProdBugsApplication",
+      "projectName": "spring-boot-prod-bugs",
+      "args": "--server.port=8080"
+    },
+    {
+      "type": "java",
+      "name": "App :8081",
+      "request": "launch",
+      "mainClass": "com.thejavaloom.prodbugs.ProdBugsApplication",
+      "projectName": "spring-boot-prod-bugs",
+      "args": "--server.port=8081"
+    },
+    {
+      "type": "java",
+      "name": "Bug 2 broken :8080",
+      "request": "launch",
+      "mainClass": "com.thejavaloom.prodbugs.ProdBugsApplication",
+      "projectName": "spring-boot-prod-bugs",
+      "args": "--server.port=8080 --demo.bug2.mode=broken"
+    },
+    {
+      "type": "java",
+      "name": "Bug 2 broken :8081",
+      "request": "launch",
+      "mainClass": "com.thejavaloom.prodbugs.ProdBugsApplication",
+      "projectName": "spring-boot-prod-bugs",
+      "args": "--server.port=8081 --demo.bug2.mode=broken"
+    },
+    {
+      "type": "java",
+      "name": "Bug 2 broken :8082",
+      "request": "launch",
+      "mainClass": "com.thejavaloom.prodbugs.ProdBugsApplication",
+      "projectName": "spring-boot-prod-bugs",
+      "args": "--server.port=8082 --demo.bug2.mode=broken"
+    },
+    {
+      "type": "java",
+      "name": "Bug 2 fixed :8080",
+      "request": "launch",
+      "mainClass": "com.thejavaloom.prodbugs.ProdBugsApplication",
+      "projectName": "spring-boot-prod-bugs",
+      "args": "--server.port=8080 --demo.bug2.mode=fixed"
+    },
+    {
+      "type": "java",
+      "name": "Bug 2 fixed :8081",
+      "request": "launch",
+      "mainClass": "com.thejavaloom.prodbugs.ProdBugsApplication",
+      "projectName": "spring-boot-prod-bugs",
+      "args": "--server.port=8081 --demo.bug2.mode=fixed"
+    },
+    {
+      "type": "java",
+      "name": "Bug 2 fixed :8082",
+      "request": "launch",
+      "mainClass": "com.thejavaloom.prodbugs.ProdBugsApplication",
+      "projectName": "spring-boot-prod-bugs",
+      "args": "--server.port=8082 --demo.bug2.mode=fixed"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Bugs 3-5: one server",
+      "configurations": ["App :8080"],
+      "stopAll": true
+    },
+    {
+      "name": "Bug 1: two servers",
+      "configurations": ["App :8080", "App :8081"],
+      "stopAll": true
+    },
+    {
+      "name": "Bug 2 broken: three servers",
+      "configurations": ["Bug 2 broken :8080", "Bug 2 broken :8081", "Bug 2 broken :8082"],
+      "stopAll": true
+    },
+    {
+      "name": "Bug 2 fixed: three servers",
+      "configurations": ["Bug 2 fixed :8080", "Bug 2 fixed :8081", "Bug 2 fixed :8082"],
+      "stopAll": true
+    }
+  ]
+}

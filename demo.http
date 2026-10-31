@@ -1,0 +1,82 @@
+### ===== BUG 1 - @Cacheable stale data (run instances on 8080 and 8081) =====
+
+### reset price to 999
+POST http://localhost:8080/bug1/reset
+
+### read on 8081 - caches 999 there
+GET http://localhost:8081/bug1/broken/price/1
+
+### update to 499 on 8080 (evicts 8080's cache only)
+PUT http://localhost:8080/bug1/broken/price/1?value=499
+
+### 8080 - 499
+GET http://localhost:8080/bug1/broken/price/1
+
+### 8081 - still 999 (STALE)
+GET http://localhost:8081/bug1/broken/price/1
+
+### --- fixed (shared Redis cache - start Memurai or Redis first) ---
+GET http://localhost:8081/bug1/fixed/price/1
+
+###
+PUT http://localhost:8080/bug1/fixed/price/1?value=499
+
+### 8081 - 499
+GET http://localhost:8081/bug1/fixed/price/1
+
+
+### ===== BUG 2 - @Scheduled on every instance =====
+
+### emails per user (3 instances in broken mode -> 3 each)
+GET http://localhost:8080/bug2/emails
+
+###
+DELETE http://localhost:8080/bug2/emails
+
+
+### ===== BUG 3 - @Transactional self-invocation =====
+
+### broken - payment fails, order stays
+POST http://localhost:8080/bug3/broken/orders
+
+###
+DELETE http://localhost:8080/bug3/orders
+
+### fixed - payment fails, order rolled back
+POST http://localhost:8080/bug3/fixed/orders
+
+
+### ===== BUG 4 - LazyInitializationException =====
+
+### seed - note the orderId
+POST http://localhost:8080/bug4/seed
+
+### controller path - works thanks to open-in-view
+GET http://localhost:8080/bug4/controller/1
+
+### async path - LazyInitializationException
+GET http://localhost:8080/bug4/async/broken/1
+
+### async path, fixed with @EntityGraph
+GET http://localhost:8080/bug4/async/fixed/1
+
+
+### ===== BUG 5 - Lost updates =====
+
+###
+POST http://localhost:8080/bug5/reset
+
+### 100 concurrent purchases - stock should be 0, isn't
+POST http://localhost:8080/bug5/broken/load
+
+###
+POST http://localhost:8080/bug5/reset
+
+### atomic UPDATE
+POST http://localhost:8080/bug5/atomic/load
+
+###
+POST http://localhost:8080/bug5/reset
+
+### optimistic locking (@Version + retry)
+POST http://localhost:8080/bug5/optimistic/load

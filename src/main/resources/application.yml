@@ -1,0 +1,36 @@
+server:
+  port: 8080
+
+spring:
+  # Default: no Docker. An H2 database in a file (./data), shared by every instance you start:
+  # the first one opens it, the others connect through H2's auto-server mode.
+  # Production-like database instead: --spring.profiles.active=docker (PostgreSQL).
+  datasource:
+    url: jdbc:h2:file:./data/prodbugs;AUTO_SERVER=TRUE;LOCK_TIMEOUT=10000
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    # Spring Boot's default, set explicitly because bug 4 depends on it:
+    # the Hibernate session stays open until the HTTP response is written.
+    open-in-view: true
+  data:
+    redis:          # only the fixed version of bug 1 uses it (Redis or Memurai)
+      host: localhost
+      port: 6379
+  sql:
+    init:
+      mode: always   # creates the shedlock table (schema.sql)
+
+demo:
+  instance: ${server.port}
+  bug2:
+    # off | broken | fixed
+    mode: off
+    # every 30 seconds, on the wall clock - so every instance fires at the same moment
+    cron: "*/30 * * * * *"
+
+logging:
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [${server.port}] %-5level %logger{0} - %msg%n"

@@ -1,0 +1,7 @@
+# Production-like database: PostgreSQL from docker-compose.yml.
+# Run with --spring.profiles.active=docker after `docker compose up -d`.
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/prodbugs
+    username: prodbugs
+    password: prodbugs

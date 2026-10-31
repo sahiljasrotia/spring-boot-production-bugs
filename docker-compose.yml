@@ -1,0 +1,15 @@
+# Optional. The demo runs without Docker (H2 in a file; Memurai for Redis on Windows).
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: prodbugs
+      POSTGRES_USER: prodbugs
+      POSTGRES_PASSWORD: prodbugs
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
